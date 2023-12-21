@@ -1,0 +1,33 @@
+*::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+	background-color: #ffffff;
+	border-radius: 10px;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	background-color: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #ffffff;
+	border-radius: 10px;
+	background-image: -webkit-linear-gradient(90deg,
+			rgba(0, 102, 255, 0.656)25%,
+			transparent 50%,
+			transparent 100%,
+			rgba(0, 102, 255, 0.811)25%,
+			rgba(0, 102, 255, 0.952)25%,
+			transparent 0%,
+			transparent)
+}
+
+
+/*
+ *  STYLE 11
+ */
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
