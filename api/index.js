@@ -40,7 +40,7 @@ app.post("/register", async (req, res) => {
 
 app.get("/profile", async (req, res) => {
   const token = req.cookies?.signToken;
-  const allUsers = await (await USER.find({}))
+  const allUsers = await await USER.find({});
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY_JWT, {}, (err, userData) => {
       if (err) throw err;
@@ -62,17 +62,22 @@ app.get("/chateoo/:userId", async function (req, res) {
   const jsonFile = JSON.stringify(prevConversation);
   res.json(prevConversation).status(200);
 });
-app.get('/chateoo/markMessegesRead/:senderId/:id', async function (req, res) {
-  const { id,senderId } = req.params;
-  const prevConversation = (await Conversation.find({ $and: [{ to: id }, { from: senderId }] })).length
+app.get("/chateoo/markMessegesRead/:senderId/:id", async function (req, res) {
+  const { id, senderId } = req.params;
+  const prevConversation = (
+    await Conversation.find({ $and: [{ to: id }, { from: senderId }] })
+  ).length;
 
   for (let i = 0; i < prevConversation; i++) {
     let theMessage = {
-      seen: true
-    }
-    await Conversation.updateMany({ $and: [{ to: id }, { from: senderId }] }, { $set: theMessage })
+      seen: true,
+    };
+    await Conversation.updateMany(
+      { $and: [{ to: id }, { from: senderId }] },
+      { $set: theMessage }
+    );
   }
-})
+});
 const port = 3000;
 const server = app.listen(port, () => {
   console.log(`Listineng on port ${port}`);
@@ -93,7 +98,8 @@ wss.on("connection", (connection, req) => {
   }
   connection.on("message", async (message) => {
     const newMessage = JSON.parse(message.toString());
-    const { to, from, textMessage, reciever, sender, timeStamp, messageId } = newMessage;
+    const { to, from, textMessage, reciever, sender, timeStamp, messageId } =
+      newMessage;
     const newMessageForDb = new Conversation({
       messageId,
       textMessage,
@@ -102,7 +108,7 @@ wss.on("connection", (connection, req) => {
       reciever,
       sender,
       timeStamp,
-      seen: false
+      seen: false,
     });
     await newMessageForDb.save().then(() => {
       console.log("Message has been saved successfully");
